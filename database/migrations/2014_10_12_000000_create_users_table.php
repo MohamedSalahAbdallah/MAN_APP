@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -17,11 +18,24 @@ return new class extends Migration
             $table->string('email')->collation('utf8mb4_bin')->unique();
             $table->string('user_nid'); // Add User NID column
             $table->string('phone');
+            $table->string('user_role')->default('user');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
         });
+        //create admin
+        DB::table('users')->insert([
+            'name' => 'Admin',
+            'email' => 'admin@localhost.com',
+            'user_nid' => '123456789',
+            'phone' => '123456789',
+            'user_role' => 'admin',
+            'created_at' => now(),
+            'updated_at' => now(),
+            'password' => bcrypt("password"),
+
+        ]);
     }
 
     /**

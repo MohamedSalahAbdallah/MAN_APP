@@ -20,6 +20,12 @@ return new class extends Migration
             $table->string('time');
             $table->string('image');
             $table->string('category');
+            $table->string('status');
+            $table->date('date');
+            $table->integer("ticket_price");
+            $table->integer("free_guests");
+            $table->integer("paid_guests");
+
 
         });
     }

@@ -30,7 +30,7 @@ class UserController extends Controller
             $user->phone=$request->phone;
             $user->user_nid=$request->user_nid;
             $user->save();
-            return response()->json(['message'=>'User Register Successfully','user'=>$user,'token'=>$user->createToken($user->email.'_Token')->plainTextToken,201]);
+            return response()->json(['message'=>'User Register Successfully','user'=>$user,'token'=>$user->createToken($user->email.'_Token',['user'])->plainTextToken,201]);
         }
     }
 
@@ -51,11 +51,98 @@ class UserController extends Controller
             ], 401);
 
         }else {
-            $user = User::where('email', $request->emaile)->firstOrFail();
-            return response()->json([
-                'user' => $user,
-                'token' => $user->createToken($user->email.'_Token')->plainTextToken
-            ], 200);
+            $user = User::where('email', $request->email)->firstOrFail();
+            if ($user->user_role == 'admin') {
+                $token = $user->createToken($user->email, ['admin'])->plainTextToken;
+                return response()->json([
+                    'message' => 'Login Successfully',
+                    'user' => $user,
+                    'token' => $token
+                ],200);
+            }elseif ($user->user_role == 'user') {
+                $token = $user->createToken($user->email, ['user'])->plainTextToken;
+                return response()->json([
+                    'message' => 'Login Successfully',
+                    'user' => $user,
+                    'token' => $token
+                ],200);
+            }
         }
     }
+    //User Logout
+    public function logout(Request $request){
+        $user=User::where('email',$request->email)->first();
+        $user->tokens()->delete();
+        return response()->json(['message'=>'Logout Successfully']);
+    }
+
+    //User Index
+    public function index(){
+        $user=User::all();
+        return response()->json($user);
+    }
+
+    //User show
+    public function show($id){
+        $user = User::findOrFail($id);
+        return response()->json($user);
+    }
+
+    //User update
+    public function update(Request $request, $id){
+        $validator=Validator::make($request->all(),[
+            'name'=>'required',
+            'email'=>'required|email|unique:users,email',
+            'password'=>'required',
+            'phone'=>'required',
+            'user_nid'=>'required',
+        ]);
+        if($validator->fails()){
+            return response()->json([
+                'validation_errors'=>$validator->messages(),
+            ]);
+        }else {
+            $user=User::findOrFail($id);
+            $user->update($request->all());
+            return response()->json($user);
+        }
+    }
+
+    //User delete
+    public function destroy($id){
+        $user=User::findOrFail($id);
+        $user->delete();
+        return response()->json(['message'=>'User Deleted Successfully']);
+    }
+
+    //admin create
+    public function create(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required',
+            'phone' => 'required',
+            'user_nid' => 'required',
+            'user_role' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'validation_errors' => $validator->messages(),
+            ]);
+        } else {
+            $user = User::create($request->all());
+            return response()->json(['message' => 'User Created Successfully', 'user' => $user, 'token' => $user->createToken($user->email.'_Token',['admin'])->plainTextToken], 201);
+        }
+    }
+
+    //admin index
+    public function adminIndex()
+    {
+        $user = User::where('user_role', 'admin')->get();
+        return response()->json($user);
+    }
+
+
+
 }
