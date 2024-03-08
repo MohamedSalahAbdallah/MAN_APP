@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->collation('utf8mb4_bin')->unique();
-            $table->string('user_nid'); // Add User NID column
+            $table->string('user_nid')->unique(); // Add User NID column
             $table->string('phone');
             $table->string('user_role')->default('user');
             $table->timestamp('email_verified_at')->nullable();
