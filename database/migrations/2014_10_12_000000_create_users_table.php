@@ -16,8 +16,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->collation('utf8mb4_bin')->unique();
-            $table->string('user_nid')->unique(); // Add User NID column
+            $table->string('nid')->unique(); // Add User NID column
             $table->string('phone');
+            $table->string('university')->nullable();
+            $table->string('user_name')->unique();
             $table->string('user_role')->default('user');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -28,8 +30,9 @@ return new class extends Migration
         DB::table('users')->insert([
             'name' => 'Admin',
             'email' => 'admin@localhost.com',
-            'user_nid' => '123456789',
+            'nid' => '123456789',
             'phone' => '123456789',
+            'user_name' => 'admin',
             'user_role' => 'admin',
             'created_at' => now(),
             'updated_at' => now(),

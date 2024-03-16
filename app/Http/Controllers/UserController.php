@@ -15,9 +15,13 @@ class UserController extends Controller
         $validator=Validator::make($request->all(),[
             'name'=>'required',
             'email'=>'required|email|unique:users,email',
+            'user_name' => 'required',
             'password'=>'required|min:8',
+            'nid'=>'required|numeric|unique:users,nid|digits:14',
+            'university'  => 'string',
             'phone'=>'required|numeric|digits:11',
-            'user_nid'=>'required|numeric|unique:users,user_nid|digits:14',
+
+
         ]);
         if($validator->fails()){
             return response()->json([
@@ -26,9 +30,13 @@ class UserController extends Controller
         }else {
             $user->name=$request->name;
             $user->email=$request->email;
+            $user->user_name=$request->user_name;
             $user->password=bcrypt($request->password);
+            $user->nid=$request->nid;
+            $user->university= $request->university;
             $user->phone=$request->phone;
-            $user->user_nid=$request->user_nid;
+            $user->nid=$request->nid;
+            $user->user_name = $request->user_name;
             $user->save();
             return response()->json(['message'=>'User Register Successfully','user'=>$user,'token'=>$user->createToken($user->email.'_Token',['user'])->plainTextToken,201]);
         }
@@ -37,30 +45,30 @@ class UserController extends Controller
     //user login API
     public function login(Request $request){
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            'user_name' => 'required',
             'password' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->json([
-                'validation_errors' => $validator->messages(),
+                'validation_errors' => $validator->messages(),402
             ]);
         }
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::attempt($request->only('user_name', 'password'))) {
             return response()->json([
                 'message' => 'Invalid login details'
             ], 401);
 
         }else {
-            $user = User::where('email', $request->email)->firstOrFail();
+            $user = User::where('user_name', $request->user_name)->firstOrFail();
             if ($user->user_role == 'admin') {
-                $token = $user->createToken($user->email, ['admin'])->plainTextToken;
+                $token = $user->createToken($user->user_name, ['admin'])->plainTextToken;
                 return response()->json([
                     'message' => 'Login Successfully',
                     'user' => $user,
                     'token' => $token
                 ],200);
             }elseif ($user->user_role == 'user') {
-                $token = $user->createToken($user->email, ['user'])->plainTextToken;
+                $token = $user->createToken($user->user_name, ['user'])->plainTextToken;
                 return response()->json([
                     'message' => 'Login Successfully',
                     'user' => $user,
@@ -71,8 +79,7 @@ class UserController extends Controller
     }
     //User Logout
     public function logout(Request $request){
-        $user=User::where('email',$request->email)->first();
-        $user->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
         return response()->json(['message'=>'Logout Successfully']);
     }
 
@@ -95,7 +102,8 @@ class UserController extends Controller
             'email'=>'required|email|unique:users,email',
             'password'=>'required',
             'phone'=>'required',
-            'user_nid'=>'required',
+            'nid'=>'required',
+            'university' => 'string',
         ]);
         if($validator->fails()){
             return response()->json([
@@ -122,7 +130,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
             'phone' => 'required',
-            'user_nid' => 'required',
+            'nid' => 'required',
             'user_role' => 'required',
         ]);
 
