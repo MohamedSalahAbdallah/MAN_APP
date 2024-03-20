@@ -8,6 +8,19 @@ use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
+
+    //function to handle images for events
+    public function storeImage(Request $request){
+        if($request->hasFile('image')){
+            $request->validate([
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
+            $imageName = time().'.'.$request->image->getClientOriginalName();
+            $request->image->move(public_path('images'), $imageName);
+            return $imageName;
+        }
+    }
+
     //Event index
     public function index()
     {
@@ -45,7 +58,20 @@ class EventController extends Controller
         }else {
 
             $Event=Event::findOrFail($id);
-            $Event->update($request->all());
+            $imageName = $this->storeImage($request);
+            $Event->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'location' => $request->location,
+                'time' => $request->time,
+                'image' => $imageName,
+                'category' => $request->category,
+                'status' => $request->status,
+                'date' => $request->date,
+                'ticket_price' => $request->ticket_price,
+                'free_guests' => $request->free_guests,
+                'paid_guests' => $request->paid_guests,
+            ]);
             return response()->json($Event);
         }
     }
@@ -80,7 +106,22 @@ class EventController extends Controller
                 'validation_errors' => $validator->messages(),
             ]);
         }else {
-            $Event=Event::create($request->all());
+
+            $imageName = $this->storeImage($request);
+
+            $Event=Event::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'location' => $request->location,
+                'time' => $request->time,
+                'image' => $imageName,
+                'category' => $request->category,
+                'status' => $request->status,
+                'date' => $request->date,
+                'ticket_price' => $request->ticket_price,
+                'free_guests' => $request->free_guests,
+                'paid_guests' => $request->paid_guests,
+            ]);
             return response()->json($Event);
         }
     }

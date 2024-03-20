@@ -14,10 +14,14 @@ class UserBill extends Model
         'bill_date',
         'bill_description',
         'bill_status',
-
+        'event_id',
     ];
 
     public function user() {
         $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function event() {
+        $this->belongsTo(Event::class, 'event_id');
     }
 }
