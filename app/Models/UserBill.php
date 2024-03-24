@@ -10,18 +10,18 @@ class UserBill extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
+        'number_of_tickets',
         'bill_amount',
-        'bill_date',
-        'bill_description',
         'bill_status',
         'event_id',
     ];
 
+    //belongs to one user
     public function user() {
-        $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function event() {
-        $this->belongsTo(Event::class, 'event_id');
+        return $this->belongsTo(Event::class, 'event_id');
     }
 }

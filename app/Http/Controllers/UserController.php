@@ -132,6 +132,7 @@ class UserController extends Controller
             'phone' => 'required',
             'nid' => 'required',
             'user_role' => 'required',
+
         ]);
 
         if ($validator->fails()) {
@@ -151,6 +152,10 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-
+    //get users with tips of category travel
+    public function getUsersWithBills(){
+        $users=User::with('bills')->get();
+        return response()->json($users);
+    }
 
 }

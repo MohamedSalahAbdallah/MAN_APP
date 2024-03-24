@@ -19,9 +19,8 @@ return new class extends Migration
             $table->unsignedBigInteger('event_id');
             $table->foreign('event_id')->references('id')->on('events');
             $table->float("bill_amount");
-            $table->date("bill_date");
-            $table->string("bill_description");
-            $table->string("bill_status");
+            $table->integer("number_of_tickets");
+            $table->string("bill_status")->default("unpaid");
 
         });
     }

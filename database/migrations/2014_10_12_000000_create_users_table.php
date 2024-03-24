@@ -36,7 +36,7 @@ return new class extends Migration
             'user_role' => 'admin',
             'created_at' => now(),
             'updated_at' => now(),
-            'password' => bcrypt("password"),
+            'password' => bcrypt("Aa123456789"),
 
         ]);
     }

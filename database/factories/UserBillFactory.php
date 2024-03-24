@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Event;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -18,13 +19,15 @@ class UserBillFactory extends Factory
     public function definition(): array
     {
         return [
-            'bill_amount' => fake()->randomFloat(2, 100, 1000),
-            'bill_date' => fake()->date(),
-            'bill_description' => fake()->text(),
-            'bill_status' => fake()->randomElement(['paid', 'unpaid']),
-            'user_id' => function () {
+            'user_id' => function(){
                 return User::factory()->create()->id;
             },
+            'event_id' => function(){
+                return Event::factory()->create()->id;
+            },
+            'bill_amount' => $this->faker->randomFloat(2, 10, 100),
+            'number_of_tickets' => $this->faker->numberBetween(1, 10),
+            'bill_status' => $this->faker->randomElement(['unpaid', 'paid']),
         ];
     }
 }

@@ -14,17 +14,20 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('name');
-            $table->string('description');
+            // $table->string('name');
+            // $table->string('description');
             $table->string('location');
-            $table->string('time');
+            // $table->string('time');
             $table->string('image');
             $table->string('category');
-            $table->string('status');
-            $table->date('date');
+            $table->string('status')->default('active');
+            // $table->date('date');
             $table->integer("ticket_price");
-            $table->integer("free_guests");
-            $table->integer("paid_guests");
+            // $table->integer("free_guests");
+            // $table->integer("paid_guests");
+            $table->float("extra_price");
+            $table->string('vod__cash');
+            $table->string('etis__cash');
 
 
         });

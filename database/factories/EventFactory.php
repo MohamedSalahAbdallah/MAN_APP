@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Event;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,17 +19,20 @@ class EventFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
-            'description' => fake()->text(),
-            'location' => fake()->address(),
-            'time' => fake()->time(),
-            'image' => fake()->imageUrl(),
-            'category' => fake()->word(),
-            'status' => fake()->word(),
-            'date' => fake()->date(),
-            'ticket_price' => fake()->randomFloat(2, 100, 1000),
-            'free_guests' => fake()->numberBetween(0, 100),
-            'paid_guests' => fake()->numberBetween(0, 100),
+            // 'name' => $this->faker->name,
+            // 'description' => $this->faker->sentence,
+            'location' => $this->faker->city,
+            // 'time' => $this->faker->time,
+            'image' => 'path/to/image.jpg',
+            'category' => $this->faker->randomElement(['grad','travel']),
+            'status' => $this->faker->randomElement(['active', 'inactive']),
+            // 'date' => $this->faker->date,
+            'ticket_price' => $this->faker->numberBetween(10, 100),
+            // 'free_guests' => $this->faker->numberBetween(0, 50),
+            // 'paid_guests' => $this->faker->numberBetween(0, 50),
+            'extra_price' => $this->faker->randomFloat(2, 0, 50),
+            'vod__cash' => $this->faker->phoneNumber(),
+            'etis__cash' => $this->faker->phoneNumber(),
         ];
     }
 }

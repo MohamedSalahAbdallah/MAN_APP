@@ -27,9 +27,8 @@ class UserBillController extends Controller
         $validator=Validator::make($request->all(),[
             'user_id' => 'required',
             'bill_amount' => 'required|numeric',
-            'bill_date' => 'required|date',
-            'bill_description' => 'required|string',
             'bill_status' => 'required|string',
+            'number_of_tickets' => 'required|numeric',
         ]);
 
         if($validator->fails()){
@@ -56,30 +55,38 @@ class UserBillController extends Controller
 
         $validator=Validator::make($request->all(),[
             'bill_amount' => 'required|numeric',
-            'bill_date' => 'required|date',
-            'bill_description' => 'required|string',
-            'bill_status' => 'required|string',
             'event_id' => 'required|numeric|exists:events,id',
+            'number_of_tickets' => 'required|numeric',
         ]);
 
         if($validator->fails()){
             return response()->json([
                 'validation_errors' => $validator->messages(),
-            ]);
+            ],400);
         }else {
 
             $userBill=UserBill::create([
                 'user_id' => $request->user()->id,
                 'bill_amount' => $request->bill_amount,
-                'bill_date' => $request->bill_date,
-                'bill_description' => $request->bill_description,
-                'bill_status' => $request->bill_status,
+                'number_of_tickets' => $request->number_of_tickets,
                 'event_id' => $request->event_id,
             ]);
 
             return response()->json($userBill);
         }
-
-
     }
+
+    public function getTravelUsers() {
+        return UserBill::with(['event', 'user'])->whereHas('event', function ($query) {
+            $query->where('category', 'travel');
+        })->get();
+    }
+
+    public function getGradUsers() {
+        return UserBill::with(['user'])->whereHas('event', function ($query) {
+            $query->where('category', 'grad');
+        })->get();
+    }
+
+
 }

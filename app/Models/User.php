@@ -48,7 +48,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function userBills() {
-        $this->hasMany(UserBill::class);
+    // has many bill relation
+    public function bills() {
+        return $this->hasMany(UserBill::class);
     }
 }

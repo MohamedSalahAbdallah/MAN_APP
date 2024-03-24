@@ -10,21 +10,24 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
-    'name',
-    'description',
+    // 'name',
+    // 'description',
     'location',
-    'time',
+    // 'time',
     'image',
     'category',
     'status',
-    'date',
+    // 'date',
     'ticket_price',
-    'free_guests',
-    'paid_guests',
+    // 'free_guests',
+    // 'paid_guests',
+    'extra_price',
+    'vod__cash',
+    'etis__cash',
     ];
 
 
     public function userBills() {
-        $this->hasMany(UserBill::class);
+        return $this->hasMany(UserBill::class);
     }
 }

@@ -46,22 +46,29 @@ Route::middleware(['auth:sanctum','abilities:admin'])->post("/admin/create",[Use
 //UserBill API Routes
 
 //UserBill index
-Route::middleware('auth:sanctum')->get("/userBill",[UserBillController::class,"index"])->name("userBill.index");
+Route::middleware(['auth:sanctum','abilities:admin'])->get("/userBill",[UserBillController::class,"index"])->name("userBill.index");
 //UserBill show
-Route::middleware('auth:sanctum')->get("/userBill/{id}",[UserBillController::class,"show"])->name("userBill.show");
+Route::middleware(['auth:sanctum','abilities:admin'])->get("/userBill/{id}",[UserBillController::class,"show"])->name("userBill.show");
 //UserBill update
-Route::middleware('auth:sanctum')->put("/userBill/{id}",[UserBillController::class,"update"])->name("userBill.update");
+Route::middleware(['auth:sanctum','abilities:admin'])->put("/userBill/{id}",[UserBillController::class,"update"])->name("userBill.update");
 //UserBill delete
-Route::middleware('auth:sanctum')->delete("/userBill/{id}",[UserBillController::class,"destroy"])->name("userBill.destroy");
+Route::middleware(['auth:sanctum','abilities:admin'])->delete("/userBill/{id}",[UserBillController::class,"destroy"])->name("userBill.destroy");
 //UserBill store
-Route::middleware('auth:sanctum')->post("/userBill",[UserBillController::class,"store"])->name("userBill.store");
+Route::middleware(['auth:sanctum','abilities:admin'])->post("/userBill",[UserBillController::class,"store"])->name("userBill.store");
 
+Route::middleware(['auth:sanctum','abilities:admin'])->get("/travelbills",[UserBillController::class,"getTravelUsers"])->name("userBill");
+Route::middleware(['auth:sanctum','abilities:admin'])->get("/gradbills",[UserBillController::class,"getGradUsers"])->name("userBill");
 //Event API Routes
 
 //Event index
 Route::get("/event",[EventController::class, 'index']);
 //Event show
 Route::get("/event/{id}",[EventController::class, 'show']);
+//
+Route::get("/travel",[EventController::class, 'getTravel']);
+Route::get("/grad",[EventController::class, 'getGrad']);
+
+
 //Event update
 Route::middleware(['auth:sanctum','abilities:admin'])->put("/event/{id}",[EventController::class, 'update']);
 //Event delete

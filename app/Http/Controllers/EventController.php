@@ -38,17 +38,19 @@ class EventController extends Controller
     //Event update
     public function update(Request $request, $id){
         $validator=Validator::make($request->all(),[
-            'title'=>'required',
-            'description'=>'required',
+            // 'name'=>'required',
+            // 'description'=>'required',
             'location'=>'required',
-            'time'=>'required',
+            // 'time'=>'required',
             'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category'=>'required|string',
-            'status'=>'required',
-            'date'=>'required|date',
+            // 'status'=>'required',
+            // 'date'=>'required|date',
             'ticket_price'=>'required|numeric',
-            'free_guests'=>'required|numeric',
-            'paid_guests'=>'required|numeric',
+            // 'free_guests'=>'required|numeric',
+            // 'paid_guests'=>'required|numeric',
+            'etis__cash' => 'required|numeric',
+            'vod__cash' => 'required|numeric',
         ]);
 
         if($validator->fails()){
@@ -60,17 +62,19 @@ class EventController extends Controller
             $Event=Event::findOrFail($id);
             $imageName = $this->storeImage($request);
             $Event->update([
-                'name' => $request->name,
-                'description' => $request->description,
+                // 'name' => $request->name,
+                // 'description' => $request->description,
                 'location' => $request->location,
-                'time' => $request->time,
+                // 'time' => $request->time,
                 'image' => $imageName,
                 'category' => $request->category,
-                'status' => $request->status,
-                'date' => $request->date,
+                // 'status' => $request->status,
+                // 'date' => $request->date,
                 'ticket_price' => $request->ticket_price,
-                'free_guests' => $request->free_guests,
-                'paid_guests' => $request->paid_guests,
+                // 'free_guests' => $request->free_guests,
+                // 'paid_guests' => $request->paid_guests,
+                'etis__cash' => $request->etis__cash,
+                'vod__cash' => $request->vod__cash,
             ]);
             return response()->json($Event);
         }
@@ -87,17 +91,20 @@ class EventController extends Controller
     public function store(Request $request){
 
         $validator=Validator::make($request->all(),[
-            'name'=>'required',
-            'description'=>'required',
+            // 'name'=>'required',
+            // 'description'=>'required',
             'location'=>'required',
-            'time'=>'required',
+            // 'time'=>'required',
             'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category'=>'required|string',
-            'status'=>'required',
-            'date'=>'required|date',
+            // 'status'=>'required',
+            // 'date'=>'required|date',
             'ticket_price'=>'required|numeric',
-            'free_guests'=>'required|numeric',
-            'paid_guests'=>'required|numeric',
+            // 'free_guests'=>'required|numeric',
+            // 'paid_guests'=>'required|numeric',
+            'extra_price'=>'required|numeric',
+            'etis__cash' => 'required|numeric',
+            'vod__cash' => 'required|numeric',
 
         ]);
 
@@ -110,19 +117,34 @@ class EventController extends Controller
             $imageName = $this->storeImage($request);
 
             $Event=Event::create([
-                'name' => $request->name,
-                'description' => $request->description,
+                // 'name' => $request->name,
+                // 'description' => $request->description,
                 'location' => $request->location,
-                'time' => $request->time,
+                // 'time' => $request->time,
                 'image' => $imageName,
                 'category' => $request->category,
-                'status' => $request->status,
-                'date' => $request->date,
+                // 'status' => $request->status,
+                // 'date' => $request->date,
                 'ticket_price' => $request->ticket_price,
-                'free_guests' => $request->free_guests,
-                'paid_guests' => $request->paid_guests,
+                // 'free_guests' => $request->free_guests,
+                // 'paid_guests' => $request->paid_guests,
+                'extra_price' => $request->extra_price,
+                'etis__cash' => $request->etis__cash,
+                'vod__cash' => $request->vod__cash,
             ]);
             return response()->json($Event);
         }
+    }
+
+    // get event by category
+    public function getTravel(Request $request){
+        $Event = Event::where('category', 'travel')->get();
+        return response()->json($Event);
+
+    }
+    public function getGrad(Request $request){
+        $Event = Event::where('category', 'grad')->get();
+        return response()->json($Event);
+
     }
 }
