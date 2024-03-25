@@ -102,7 +102,7 @@ class EventController extends Controller
             'ticket_price'=>'required|numeric',
             // 'free_guests'=>'required|numeric',
             // 'paid_guests'=>'required|numeric',
-            'extra_price'=>'required|numeric',
+            'extra_price'=>'numeric',
             'etis__cash' => 'required|numeric',
             'vod__cash' => 'required|numeric',
 
@@ -116,22 +116,41 @@ class EventController extends Controller
 
             $imageName = $this->storeImage($request);
 
-            $Event=Event::create([
-                // 'name' => $request->name,
-                // 'description' => $request->description,
-                'location' => $request->location,
-                // 'time' => $request->time,
-                'image' => $imageName,
-                'category' => $request->category,
-                // 'status' => $request->status,
-                // 'date' => $request->date,
-                'ticket_price' => $request->ticket_price,
-                // 'free_guests' => $request->free_guests,
-                // 'paid_guests' => $request->paid_guests,
-                'extra_price' => $request->extra_price,
-                'etis__cash' => $request->etis__cash,
-                'vod__cash' => $request->vod__cash,
-            ]);
+            if ($request->extra_price) {
+                $Event=Event::create([
+                    // 'name' => $request->name,
+                    // 'description' => $request->description,
+                    'location' => $request->location,
+                    // 'time' => $request->time,
+                    'image' => $imageName,
+                    'category' => $request->category,
+                    // 'status' => $request->status,
+                    // 'date' => $request->date,
+                    'ticket_price' => $request->ticket_price,
+                    // 'free_guests' => $request->free_guests,
+                    // 'paid_guests' => $request->paid_guests,
+                    'extra_price' => $request->extra_price,
+                    'etis__cash' => $request->etis__cash,
+                    'vod__cash' => $request->vod__cash,
+                ]);
+            }else {
+                $Event=Event::create([
+                    // 'name' => $request->name,
+                    // 'description' => $request->description,
+                    'location' => $request->location,
+                    // 'time' => $request->time,
+                    'image' => $imageName,
+                    'category' => $request->category,
+                    // 'status' => $request->status,
+                    // 'date' => $request->date,
+                    'ticket_price' => $request->ticket_price,
+                    // 'free_guests' => $request->free_guests,
+                    // 'paid_guests' => $request->paid_guests,
+                    'etis__cash' => $request->etis__cash,
+                    'vod__cash' => $request->vod__cash,
+                ]);
+            }
+
             return response()->json($Event);
         }
     }

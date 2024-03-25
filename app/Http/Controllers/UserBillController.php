@@ -83,7 +83,7 @@ class UserBillController extends Controller
     }
 
     public function getGradUsers() {
-        return UserBill::with(['user'])->whereHas('event', function ($query) {
+        return UserBill::with(['user', 'event'])->whereHas('event', function ($query) {
             $query->where('category', 'grad');
         })->get();
     }

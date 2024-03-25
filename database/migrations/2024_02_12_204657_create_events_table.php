@@ -25,7 +25,7 @@ return new class extends Migration
             $table->integer("ticket_price");
             // $table->integer("free_guests");
             // $table->integer("paid_guests");
-            $table->float("extra_price");
+            $table->float("extra_price")->nullable();
             $table->string('vod__cash');
             $table->string('etis__cash');
 
