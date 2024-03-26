@@ -116,7 +116,7 @@ class EventController extends Controller
 
             $imageName = $this->storeImage($request);
 
-            if ($request->extra_price) {
+
                 $Event=Event::create([
                     // 'name' => $request->name,
                     // 'description' => $request->description,
@@ -133,25 +133,9 @@ class EventController extends Controller
                     'etis__cash' => $request->etis__cash,
                     'vod__cash' => $request->vod__cash,
                 ]);
-            }else {
-                $Event=Event::create([
-                    // 'name' => $request->name,
-                    // 'description' => $request->description,
-                    'location' => $request->location,
-                    // 'time' => $request->time,
-                    'image' => $imageName,
-                    'category' => $request->category,
-                    // 'status' => $request->status,
-                    // 'date' => $request->date,
-                    'ticket_price' => $request->ticket_price,
-                    // 'free_guests' => $request->free_guests,
-                    // 'paid_guests' => $request->paid_guests,
-                    'etis__cash' => $request->etis__cash,
-                    'vod__cash' => $request->vod__cash,
-                ]);
-            }
 
-            return response()->json($Event);
+
+            return response()->json([$Event,$request->image]);
         }
     }
 
