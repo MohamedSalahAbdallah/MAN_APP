@@ -15,7 +15,7 @@ class EventController extends Controller
             $request->validate([
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
-            $imageName = time().'.'.$request->image->getClientOriginalName();
+            $imageName = time().uniqid().".".$request->image->extension();
             $request->image->move(public_path('images'), $imageName);
             return $imageName;
         }
@@ -40,14 +40,14 @@ class EventController extends Controller
         $validator=Validator::make($request->all(),[
             // 'name'=>'required',
             // 'description'=>'required',
-            'location'=>'required',
+            'location'=>'required_if:category,travel|string',
             // 'time'=>'required',
             'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category'=>'required|string',
             // 'status'=>'required',
             // 'date'=>'required|date',
             'ticket_price'=>'required|numeric',
-            'free_guests'=>'required|numeric',
+            'free_guests'=>'required_if:category,grad',
             // 'paid_guests'=>'required|numeric',
             'etis__cash' => 'required|numeric',
             'vod__cash' => 'required|numeric',
@@ -93,14 +93,14 @@ class EventController extends Controller
         $validator=Validator::make($request->all(),[
             // 'name'=>'required',
             // 'description'=>'required',
-            'location'=>'required',
+            'location'=>'required_if:category,travel',
             // 'time'=>'required',
             'image'=>'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category'=>'required|string',
             // 'status'=>'required',
             // 'date'=>'required|date',
             'ticket_price'=>'required|numeric',
-            'free_guests'=>'required|numeric',
+            'free_guests'=>'required_if:category,grad',
             // 'paid_guests'=>'required|numeric',
             'extra_price'=>'numeric',
             'etis__cash' => 'required|numeric',

@@ -16,14 +16,14 @@ return new class extends Migration
             $table->timestamps();
             // $table->string('name');
             // $table->string('description');
-            $table->string('location');
+            $table->string('location')->nullable();
             // $table->string('time');
             $table->string('image');
             $table->string('category');
             $table->string('status')->default('active');
             // $table->date('date');
             $table->integer("ticket_price");
-            $table->integer("free_guests");
+            $table->integer("free_guests")->default(0)->nullable();
             // $table->integer("paid_guests");
             $table->float("extra_price")->nullable();
             $table->string('vod__cash');
