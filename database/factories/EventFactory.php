@@ -28,7 +28,7 @@ class EventFactory extends Factory
             'status' => $this->faker->randomElement(['active', 'inactive']),
             // 'date' => $this->faker->date,
             'ticket_price' => $this->faker->numberBetween(10, 100),
-            // 'free_guests' => $this->faker->numberBetween(0, 50),
+            'free_guests' => $this->faker->numberBetween(0, 50),
             // 'paid_guests' => $this->faker->numberBetween(0, 50),
             'extra_price' => $this->faker->randomFloat(2, 0, 50),
             'vod__cash' => $this->faker->phoneNumber(),

@@ -19,7 +19,7 @@ class Event extends Model
     'status',
     // 'date',
     'ticket_price',
-    // 'free_guests',
+    'free_guests',
     // 'paid_guests',
     'extra_price',
     'vod__cash',
