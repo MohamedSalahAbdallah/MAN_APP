@@ -54,7 +54,7 @@ Route::middleware(['auth:sanctum','abilities:admin'])->put("/userBill/{id}",[Use
 //UserBill delete
 Route::middleware(['auth:sanctum','abilities:admin'])->delete("/userBill/{id}",[UserBillController::class,"destroy"])->name("userBill.destroy");
 //UserBill store
-Route::middleware(['auth:sanctum','abilities:admin'])->post("/userBill",[UserBillController::class,"store"])->name("userBill.store");
+Route::middleware(['auth:sanctum'])->post("/userBill",[UserBillController::class,"store"])->name("userBill.store");
 
 Route::middleware(['auth:sanctum','abilities:admin'])->get("/travelbills",[UserBillController::class,"getTravelUsers"])->name("userBill");
 Route::middleware(['auth:sanctum','abilities:admin'])->get("/gradbills",[UserBillController::class,"getGradUsers"])->name("userBill");
